@@ -47,6 +47,6 @@ class ClienteService {
             console.log(err)
         })
     }
-}
 
+}
 export default new ClienteService()

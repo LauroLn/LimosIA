@@ -11,28 +11,29 @@
     <div class="card-body">
         <section class="get-in-touch">
             <h1 class="title">Adicionar ao Estoque</h1>
-            <form class="contact-form row" action="/estoque/novo" method="post">
+            <form class="contact-form row" action="/estoque/update/<%= produto._id %>" method="post">
                <div class="form-field col-lg-6">
-                  <input id="produto" name="produto" class="input-text js-input" type="text" required>
+                  <input id="produto" name="produto" class="input-text js-input" type="text" value="<%= produto.produto %>" required>
                   <label class="label" for="name">Produto</label>
                </div>
                <div class="form-field col-lg-6 ">
-                  <input id="quantidade" name="quantidade" class="input-text js-input" type="text" required>
+                  <input id="quantidade" name="quantidade" class="input-text js-input" type="text" value="<%= produto.quantidade %> "required>
                   <label class="label" for="email">Quantidade</label>
                </div>
                <div class="form-field col-lg-6 ">
-                  <input id="peso" name="peso" class="input-text js-input" type="text" required>
+                  <input id="peso" name="peso" class="input-text js-input" type="text" value="<%= produto.peso %> "required>
                   <label class="label" for="company">Peso</label>
                </div>
                 <div class="form-field col-lg-6 ">
-                  <input id="validade" name="validade" class="input-text js-input" type="text" required>
+                  <input id="validade" name="validade" class="input-text js-input" type="text" value="<%= produto.validade %> "required>
                   <label class="label" for="phone">Data de Validade</label>
                </div>
            
                <div class="form-field col-lg-12">
-                  <input class="submit-btn" type="submit" value="Cadastrar">
+                  <input class="submit-btn" type="submit" value="Editar">
                   
                </div>
+               <input type="hidden" name="id" value="<%= cliente.id %>">
             </form>
          </section>
     </div>

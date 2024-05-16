@@ -20,9 +20,27 @@ class EstoqueService {
         })
         novoProduto.save()
     }
+    SelectOne(id){
+        const produto = Estoque.findOne({_id: id})
+        return produto
+        produtoEspecifico.save()
+    }
+    Update(id, produto, quantidade, peso, validade) {
+        EstoqueService.findByIdAndUpdate(id, {
+            produto: produto,
+            quantidade: quantidade,
+            peso: peso,
+            validade: validade
+        }).then(() => {
+            console.log(`Dados do produto com id: ${id} alterados com sucesso.`)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
 
    
    
-}
+
 
 export default new EstoqueService()

@@ -20,19 +20,36 @@ router.post("/estoque/novo", Auth, (req,res) =>{
   )
   res.redirect("/estoque");
 } )
-router.get("/estoqueCad",  Auth, (req, res) => {
+router.get("/estoque/cadastrar",  Auth, (req, res) => {
   EstoqueService.SelectAll().then((estoque) => {
     res.render("estoqueCad", {
       estoque: estoque,
     })
   })
 })
-router.get("/estoqueEdit",  Auth, (req, res) => {
+router.get("/estoque/editar",  Auth, (req, res) => {
   EstoqueService.SelectAll().then((estoque) => {
     res.render("estoqueEdit", {
       estoque: estoque,
     })
   })
+})
+router.get("/estoque/editar/:id",  Auth, (req, res) => {
+  const id = req.params.id;
+  EstoqueService.SelectOne(id).then((estoque) => {
+    res.render("estoqueEdit", {
+      estoque: estoque,
+    })
+  })
+})
+router.post("/estoque/update/:id",  Auth, (req, res) => {
+  EstoqueService.Update(
+    req.body.produto,
+    req.body.quantidade,
+    req.body.peso,
+    req.body.validade
+  )
+  res.redirect("/estoque")
 })
 
 
