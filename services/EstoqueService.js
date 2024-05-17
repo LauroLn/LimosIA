@@ -26,13 +26,20 @@ class EstoqueService {
         produtoEspecifico.save()
     }
     Update(id, produto, quantidade, peso, validade) {
-        EstoqueService.findByIdAndUpdate(id, {
+        Estoque.findByIdAndUpdate(id, {
             produto: produto,
             quantidade: quantidade,
             peso: peso,
             validade: validade
         }).then(() => {
             console.log(`Dados do produto com id: ${id} alterados com sucesso.`)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    Delete(id) {
+        Estoque.findByIdAndDelete(id).then(() => {
+            console.log(`Produto com a id: ${id} foi deletado.`)
         }).catch(err => {
             console.log(err)
         })

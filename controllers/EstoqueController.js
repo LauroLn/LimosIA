@@ -2,6 +2,7 @@ import express from "express"
 const router = express.Router()
 import EstoqueService from "../services/EstoqueService.js"
 import Auth from "../middleware/Auth.js"
+import ClienteService from "../services/ClienteService.js"
 
 router.get("/estoque",  Auth, (req, res) => {
     EstoqueService.SelectAll().then((estoque) => {
@@ -44,11 +45,17 @@ router.get("/estoque/editar/:id",  Auth, (req, res) => {
 })
 router.post("/estoque/update/:id",  Auth, (req, res) => {
   EstoqueService.Update(
+    req.params.id,
     req.body.produto,
     req.body.quantidade,
     req.body.peso,
     req.body.validade
   )
+  res.redirect("/estoque")
+})
+router.get("/estoque/excluir/:id", Auth , (req,res) =>{
+  const id = req.params.id
+  EstoqueService.Delete(id)
   res.redirect("/estoque")
 })
 

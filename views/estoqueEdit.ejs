@@ -11,29 +11,29 @@
     <div class="card-body">
         <section class="get-in-touch">
             <h1 class="title">Adicionar ao Estoque</h1>
-            <form class="contact-form row" action="/estoque/update/<%= produto._id %>" method="post">
+            <form class="contact-form row" action="/estoque/update/<%= estoque._id  %>" method="post">
                <div class="form-field col-lg-6">
-                  <input id="produto" name="produto" class="input-text js-input" type="text" value="<%= produto.produto %>" required>
+                  <input id="produto" name="produto" class="input-text js-input" type="text" value="<%= estoque.produto %>" required>
                   <label class="label" for="name">Produto</label>
                </div>
                <div class="form-field col-lg-6 ">
-                  <input id="quantidade" name="quantidade" class="input-text js-input" type="text" value="<%= produto.quantidade %> "required>
+                  <input id="quantidade" name="quantidade" class="input-text js-input" type="text" value="<%= estoque.quantidade %> "required>
                   <label class="label" for="email">Quantidade</label>
                </div>
                <div class="form-field col-lg-6 ">
-                  <input id="peso" name="peso" class="input-text js-input" type="text" value="<%= produto.peso %> "required>
+                  <input id="peso" name="peso" class="input-text js-input" type="text" value="<%= estoque.peso %> "required>
                   <label class="label" for="company">Peso</label>
                </div>
                 <div class="form-field col-lg-6 ">
-                  <input id="validade" name="validade" class="input-text js-input" type="text" value="<%= produto.validade %> "required>
+                  <input id="validade" name="validade" class="input-text js-input" type="text" value="<%= estoque.validade %> "required>
                   <label class="label" for="phone">Data de Validade</label>
                </div>
            
                <div class="form-field col-lg-12">
-                  <input class="submit-btn" type="submit" value="Editar">
+                  <input class="submit-btn" type="submit" value="Editar" onclick="return confirm('Confirma as alterações?')">
                   
                </div>
-               <input type="hidden" name="id" value="<%= cliente.id %>">
+               <input type="hidden" name="id" value="<%= estoque.id %>" >
             </form>
          </section>
     </div>
