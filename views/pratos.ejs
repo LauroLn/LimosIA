@@ -1,0 +1,75 @@
+<%- include ('partials/header.ejs') %>
+<%- include ('partials/navbar.ejs') %>
+
+<div class="container">
+  <div class="card">
+      <div class="card-header">
+          <h1>Pratos</h1>
+      </div>
+      <div class="card-body">
+          <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">  Pratos Feitos  </th>
+                  <th scope="col">Pratos Consumidos</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>    
+                      <form class="contact-form row" action="/estoque/novo" method="post">
+                      <div class="form-field col-lg-6">
+                         <input id="produto" name="produto" class="input-text js-input" type="text" required>
+                         <label class="label" for="name">Pratos</label>
+                         
+                      </div>
+                      <div class="col-lg-6"> 
+                          <input class="submit-btn" type="submit" value="Adicionar" style="width: 150px; margin-top: 13%;">
+                      </div>
+                      </form>
+                  </th>
+                  <td>
+                      <form class="contact-form row" action="/estoque/novo" method="post">
+                      <div class="form-field col-lg-6">
+                         <input id="produto" name="produto" class="input-text js-input" type="text" required>
+                         <label class="label" for="name">Pratos</label>
+                      </div>
+                      <div class="col-lg-6"> 
+                          <input class="submit-btn" type="submit" value="Consumidos" style="width: 150px; margin-top: 13%;">
+                      </div>
+                      </form>
+                  </td>
+                  
+                </tr>
+              
+              </tbody>
+              
+            </table>
+            <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
+
+<script>
+var xValues = ["Feitos", "Consumidos"];
+var yValues = [55, 49];
+var barColors = [
+"red",
+"#00aba9",
+];
+
+new Chart("myChart", {
+type: "pie",
+data: {
+labels: xValues,
+datasets: [{
+backgroundColor: barColors,
+data: yValues
+}]
+},
+
+});
+</script>
+      </div>
+  </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>

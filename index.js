@@ -5,6 +5,7 @@ import PedidosController from "./controllers/PedidosController.js"
 import ProdutosController from "./controllers/ProdutosController.js"
 import EstoqueController from "./controllers/EstoqueController.js"
 import UsersController from "./controllers/UsersController.js"
+import ControleController from "./controllers/ControleControllers.js"
 import session from "express-session"
 import Auth from "./middleware/Auth.js"
 
@@ -26,6 +27,7 @@ app.use("/", PedidosController)
 app.use("/", EstoqueController)
 app.use("/", ProdutosController)
 app.use("/", UsersController)
+app.use("/", ControleController)
 
 app.get("/", Auth, function(req,res){
     res.render("index")
