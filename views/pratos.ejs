@@ -10,7 +10,7 @@
           <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">  Pratos Feitos  </th>
+                  <th scope="col">  Iniciar Dia  </th>
                   <th scope="col">Pratos Consumidos</th>
                   
                 </tr>
@@ -20,12 +20,12 @@
                   <th>    
                       <form class="contact-form row" action="/estoque/novo" method="post">
                       <div class="form-field col-lg-6">
-                         <input id="produto" name="produto" class="input-text js-input" type="text" required>
-                         <label class="label" for="name">Pratos</label>
+                         <input id="produto" name="produto" class="input-text js-input" >
+                         <label class="label" for="name"></label>
                          
                       </div>
                       <div class="col-lg-6"> 
-                          <input class="submit-btn" type="submit" value="Adicionar" style="width: 150px; margin-top: 13%;">
+                          <input class="submit-btn" type="submit" value="Iniciar" style="width: 150px; margin-top: 13%;">
                       </div>
                       </form>
                   </th>
@@ -36,8 +36,9 @@
                          <label class="label" for="name">Pratos</label>
                       </div>
                       <div class="col-lg-6"> 
-                          <input class="submit-btn" type="submit" value="Consumidos" style="width: 150px; margin-top: 13%;">
+                          <input class="submit-btn" type="submit" value="Contabilizar" style="width: 160px; margin-top: 13%;">
                       </div>
+                      
                       </form>
                   </td>
                   
@@ -47,10 +48,12 @@
               
             </table>
             <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
+          
 
 <script>
+
 var xValues = ["Feitos", "Consumidos"];
-var yValues = [55, 49];
+var yValues =  ["15","10"];
 var barColors = [
 "red",
 "#00aba9",
@@ -62,13 +65,23 @@ data: {
 labels: xValues,
 datasets: [{
 backgroundColor: barColors,
-data: yValues
+data: yValues,
 }]
 },
 
 });
 </script>
       </div>
+<table>
+  <tr>
+    <td>
+      <button type="button" class="btn btn-danger" style="background-color: red;">Finalizar Dia</button>
+    </td>
+  </tr>
+</table>
+      
+
+      
   </div>
 </div>
 
