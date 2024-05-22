@@ -18,7 +18,7 @@
               <tbody>
                 <tr>
                   <th>    
-                      <form class="contact-form row" action="/estoque/novo" method="post">
+                      <form class="contact-form row" >
                       <div class="form-field col-lg-6">
                          <input id="produto" name="produto" class="input-text js-input" >
                          <label class="label" for="name"></label>
@@ -49,11 +49,11 @@
             </table>
             <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
           
-
+            
 <script>
 
 var xValues = ["Feitos", "Consumidos"];
-var yValues =  ["15","10"];
+var yValues = ["<%= pratosFeitos %>", "<%= pratosConsumidos %>"];
 var barColors = [
 "red",
 "#00aba9",

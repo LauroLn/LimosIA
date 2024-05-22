@@ -6,7 +6,9 @@ import ControleService from "../services/ControleService.js"
 router.get("/controle",  Auth, (req, res) => {
     ControleService.SelectAll().then((prato) => {
       res.render("pratos", {
-        prato: prato,
+        pratosFeitos: prato[0].Feitos,
+        pratosConsumidos: prato[0].Consumidos,
+
       })
     })
   })
