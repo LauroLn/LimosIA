@@ -2,7 +2,6 @@ import express from "express"
 const router = express.Router()
 import EstoqueService from "../services/EstoqueService.js"
 import Auth from "../middleware/Auth.js"
-import ClienteService from "../services/ClienteService.js"
 
 router.get("/estoque",  Auth, (req, res) => {
     EstoqueService.SelectAll().then((estoque) => {

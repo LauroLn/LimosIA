@@ -13,10 +13,7 @@ class EstoqueService {
 
     Create(produto, peso, quantidade, validade) {
         const novoProduto = new Estoque({
-            produto : produto,
-            quantidade : quantidade,
-            peso : peso,
-            validade : validade
+           
         })
         novoProduto.save()
     }

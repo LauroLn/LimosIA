@@ -12,6 +12,14 @@ router.get("/controle",  Auth, (req, res) => {
       })
     })
   })
+  router.post("/controle/novo", Auth, (req,res) =>{
+    ControleService.Create(
+      req.body.Feitos,
+      req.body.Consumidos,
+      
+    )
+    res.redirect("/controle");
+  } )
 
 
 export default router

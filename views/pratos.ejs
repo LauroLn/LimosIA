@@ -10,22 +10,19 @@
           <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">  Iniciar Dia  </th>
+                  <th scope="col">Iniciar Dia</th>
                   <th scope="col">Pratos Consumidos</th>
-                  
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th>    
-                      <form class="contact-form row" >
-                      <div class="form-field col-lg-6">
-                         <input id="produto" name="produto" class="input-text js-input" >
+                      <form class="contact-form row">
+                      <div class="form-field col-lg-6" style="width: 210px;">
                          <label class="label" for="name"></label>
-                         
                       </div>
                       <div class="col-lg-6"> 
-                          <input class="submit-btn" type="submit" value="Iniciar" style="width: 150px; margin-top: 13%;">
+                          <input class="submit-btn" type="submit" value="Iniciar" id="grafico" style="width: 150px; margin-top: 13%; margin-left: -117%;">
                       </div>
                       </form>
                   </th>
@@ -33,55 +30,128 @@
                       <form class="contact-form row" action="/estoque/novo" method="post">
                       <div class="form-field col-lg-6">
                          <input id="produto" name="produto" class="input-text js-input" type="text" required>
-                         <label class="label" for="name">Pratos</label>
+                         <label class="label" for="name"></label>
                       </div>
                       <div class="col-lg-6"> 
                           <input class="submit-btn" type="submit" value="Contabilizar" style="width: 160px; margin-top: 13%;">
                       </div>
-                      
                       </form>
                   </td>
-                  
                 </tr>
-              
               </tbody>
-              
-            </table>
-            <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
+          </table>
+          <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
           
-            
-<script>
+          <script>
+              function grafico(event) {
+                if (event) event.preventDefault(); 
+          
+                var xValues = ["Feitos", "Consumidos"];
+                var yValues = ["<%= pratosFeitos %>", "<%= pratosConsumidos %>"];
+                var barColors = ["red", "#00aba9"];
 
-var xValues = ["Feitos", "Consumidos"];
-var yValues = ["<%= pratosFeitos %>", "<%= pratosConsumidos %>"];
-var barColors = [
-"red",
-"#00aba9",
-];
+                // Salvando os dados no localStorage
+                var chartData = { xValues: xValues, yValues: yValues, barColors: barColors };
+                localStorage.setItem('chartData', JSON.stringify(chartData));
+          
+                // Desenhando o gráfico
+                new Chart(document.getElementById("myChart"), {
+                  type: "pie",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues,
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Gráfico de Pratos'
+                      }
+                    }
+                  }
+                });
+              }
+          
+              // Função para carregar o gráfico a partir do localStorage
+              function loadChart() {
+                var storedData = localStorage.getItem('chartData');
+                if (storedData) {
+                  var chartData = JSON.parse(storedData);
+          
+                  new Chart(document.getElementById("myChart"), {
+                    type: "pie",
+                    data: {
+                      labels: chartData.xValues,
+                      datasets: [{
+                        backgroundColor: chartData.barColors,
+                        data: chartData.yValues,
+                      }]
+                    },
+                    options: {
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          position: 'top',
+                        },
+                        title: {
+                          display: true,
+                          text: 'Gráfico de Pratos'
+                        }
+                      }
+                    }
+                  });
+                }
+              }
 
-new Chart("myChart", {
-type: "pie",
-data: {
-labels: xValues,
-datasets: [{
-backgroundColor: barColors,
-data: yValues,
-}]
-},
+              // Função para finalizar o dia, enviar dados ao servidor e limpar o gráfico
+              function finalizarDia() {
+                var storedData = localStorage.getItem('chartData');
+                if (storedData) {
+                  var chartData = JSON.parse(storedData);
 
-});
-</script>
+                  // Enviar os dados ao servidor
+                  fetch('/finalizar-dia', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(chartData)
+                  }).then(response => {
+                    if (response.ok) {
+                      alert('Dados enviados com sucesso!');
+                      localStorage.removeItem('chartData'); // Limpar o localStorage
+                      document.getElementById("myChart").remove(); // Remover o gráfico
+                    } else {
+                      alert('Erro ao enviar dados.');
+                    }
+                  }).catch(error => {
+                    console.error('Erro:', error);
+                  });
+                }
+              }
+          
+              // Adicionando os event listeners
+              document.getElementById("grafico").addEventListener("click", grafico);
+              document.getElementById("finalizarDia").addEventListener("click", finalizarDia);
+
+              // Carregar o gráfico quando a página for carregada
+              window.onload = loadChart;
+          </script>
       </div>
-<table>
-  <tr>
-    <td>
-      <button type="button" class="btn btn-danger" style="background-color: red;">Finalizar Dia</button>
-    </td>
-  </tr>
-</table>
-      
-
-      
+      <table>
+        <tr>
+          <td>
+            <button type="button" id="finalizarDia" class="btn btn-danger" style="background-color: red;">Finalizar Dia</button>
+          </td>
+        </tr>
+      </table>
   </div>
 </div>
 
