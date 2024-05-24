@@ -13,14 +13,17 @@ class EstoqueService {
 
     Create(produto, peso, quantidade, validade) {
         const novoProduto = new Estoque({
-           
+           produto : produto,
+           peso : peso,
+           quantidade : quantidade,
+           validade : validade
         })
         novoProduto.save()
     }
     SelectOne(id){
         const produto = Estoque.findOne({_id: id})
         return produto
-        produtoEspecifico.save()
+        
     }
     Update(id, produto, quantidade, peso, validade) {
         Estoque.findByIdAndUpdate(id, {

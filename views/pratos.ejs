@@ -27,12 +27,13 @@
                       </form>
                   </th>
                   <td>
-                      <form class="contact-form row" action="/estoque/novo" method="post">
+                      <form class="contact-form row" action="/controle/adicionar" method="post">
                       <div class="form-field col-lg-6">
-                         <input id="produto" name="produto" class="input-text js-input" type="text" required>
-                         <label class="label" for="name"></label>
+                         <input id="Consumidos "name="Consumidos" class="input-text js-input" type="text" required>
+                         <label class="label" for="Consumidos"></label>
                       </div>
                       <div class="col-lg-6"> 
+                          <input type="hidden" name="id" value="<%= pratoID %>" >
                           <input class="submit-btn" type="submit" value="Contabilizar" style="width: 160px; margin-top: 13%;">
                       </div>
                       </form>
@@ -110,32 +111,7 @@
                 }
               }
 
-              // Função para finalizar o dia, enviar dados ao servidor e limpar o gráfico
-              function finalizarDia() {
-                var storedData = localStorage.getItem('chartData');
-                if (storedData) {
-                  var chartData = JSON.parse(storedData);
-
-                  // Enviar os dados ao servidor
-                  fetch('/finalizar-dia', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(chartData)
-                  }).then(response => {
-                    if (response.ok) {
-                      alert('Dados enviados com sucesso!');
-                      localStorage.removeItem('chartData'); // Limpar o localStorage
-                      document.getElementById("myChart").remove(); // Remover o gráfico
-                    } else {
-                      alert('Erro ao enviar dados.');
-                    }
-                  }).catch(error => {
-                    console.error('Erro:', error);
-                  });
-                }
-              }
+             
           
               // Adicionando os event listeners
               document.getElementById("grafico").addEventListener("click", grafico);
@@ -144,6 +120,9 @@
               // Carregar o gráfico quando a página for carregada
               window.onload = loadChart;
           </script>
+
+
+
       </div>
       <table>
         <tr>

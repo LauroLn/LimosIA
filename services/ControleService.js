@@ -20,6 +20,19 @@ class ControleService{
         })
         relatorio.save()
     }
+    async Update(id ,Consumidos){
+        const prato = await Pratos.findById(id)
+        let ConsumidosAtual = prato.Consumidos
+        let ConsumidosNovo = ConsumidosAtual + parseInt(Consumidos)
+        let FeitosAtual = prato.Feitos
+        let FeitosoNovo = FeitosAtual -parseInt(Consumidos)
+
+
+        return Pratos.findByIdAndUpdate(id, {Consumidos: ConsumidosNovo, Feitos : FeitosoNovo})
+
+
+    }
+
 }
 
 export default new ControleService()
