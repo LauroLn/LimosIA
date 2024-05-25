@@ -10,7 +10,7 @@
           <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">Iniciar Dia</th>
+                  <th scope="col">Finalizar/Iniciar dia</th>
                   <th scope="col">Pratos Consumidos</th>
                 </tr>
               </thead>
@@ -18,18 +18,19 @@
                 <tr>
                   <th>    
                       <form class="contact-form row">
-                      <div class="form-field col-lg-6" style="width: 210px;">
+                      <div class="form-field col-lg-6" style="width: 150px;">
                          <label class="label" for="name"></label>
                       </div>
                       <div class="col-lg-6"> 
-                          <input class="submit-btn" type="submit" value="Iniciar" id="grafico" style="width: 150px; margin-top: 13%; margin-left: -117%;">
+                        <input class="submit-btn" type="button" value="Iniciar" id="grafico" style="width: 100px; margin-top: 13%; margin-left: -117%;">
+                        <input class="submit-btn" type="button" value="Finalizar" id="grafico-fechar" style="width: 125px; margin-top: 13%; margin-left: -117%;">
                       </div>
                       </form>
                   </th>
                   <td>
                       <form class="contact-form row" action="/controle/adicionar" method="post">
                       <div class="form-field col-lg-6">
-                         <input id="Consumidos "name="Consumidos" class="input-text js-input" type="text" required>
+                         <input id="Consumidos" name="Consumidos" class="input-text js-input" type="text" required>
                          <label class="label" for="Consumidos"></label>
                       </div>
                       <div class="col-lg-6"> 
@@ -41,7 +42,7 @@
                 </tr>
               </tbody>
           </table>
-          <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%;"></canvas>
+          <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%; display: none;"></canvas>
           
           <script>
               function grafico(event) {
@@ -54,9 +55,12 @@
                 // Salvando os dados no localStorage
                 var chartData = { xValues: xValues, yValues: yValues, barColors: barColors };
                 localStorage.setItem('chartData', JSON.stringify(chartData));
-          
-                // Desenhando o gráfico
-                new Chart(document.getElementById("myChart"), {
+              
+                // Exibir o canvas e desenhar o gráfico
+                var chartCanvas = document.getElementById("myChart");
+                chartCanvas.style.display = 'block';
+
+                new Chart(chartCanvas, {
                   type: "pie",
                   data: {
                     labels: xValues,
@@ -79,58 +83,23 @@
                   }
                 });
               }
-          
-              // Função para carregar o gráfico a partir do localStorage
-              function loadChart() {
-                var storedData = localStorage.getItem('chartData');
-                if (storedData) {
-                  var chartData = JSON.parse(storedData);
-          
-                  new Chart(document.getElementById("myChart"), {
-                    type: "pie",
-                    data: {
-                      labels: chartData.xValues,
-                      datasets: [{
-                        backgroundColor: chartData.barColors,
-                        data: chartData.yValues,
-                      }]
-                    },
-                    options: {
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          position: 'top',
-                        },
-                        title: {
-                          display: true,
-                          text: 'Gráfico de Pratos'
-                        }
-                      }
-                    }
-                  });
-                }
+
+              function fecharGrafico(event) {
+                if (event) event.preventDefault();
+                localStorage.removeItem('chartData');
+                
+                var chartCanvas = document.getElementById("myChart");
+                chartCanvas.style.display = 'none';
+
+                // Remove the existing chart instance
+                Chart.getChart(chartCanvas).destroy();
               }
 
-             
-          
               // Adicionando os event listeners
               document.getElementById("grafico").addEventListener("click", grafico);
-              document.getElementById("finalizarDia").addEventListener("click", finalizarDia);
-
-              // Carregar o gráfico quando a página for carregada
-              window.onload = loadChart;
+              document.getElementById("grafico-fechar").addEventListener("click", fecharGrafico);
           </script>
-
-
-
       </div>
-      <table>
-        <tr>
-          <td>
-            <button type="button" id="finalizarDia" class="btn btn-danger" style="background-color: red;">Finalizar Dia</button>
-          </td>
-        </tr>
-      </table>
   </div>
 </div>
 
