@@ -1,0 +1,215 @@
+<%- include ('partials/header.ejs') %>
+<%- include ('partials/navbar.ejs') %>
+
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        background: #f0f0f0;
+    }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    .calendar {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 400px;
+    }
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .calendar-header button {
+        background: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .calendar-header button:disabled {
+        background: #ccc;
+    }
+    .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
+    .calendar-days div {
+        padding: 10px;
+        background: #f0f0f0;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .calendar-days .selected {
+        background: #007BFF;
+        color: #fff;
+    }
+    .description {
+        margin-top: 20px;
+    }
+    .description img {
+        max-width: 100%;
+        margin-top: 10px;
+    }
+    .text-image-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+</head>
+<body>
+<!-- Conteúdo da página -->
+<div class="container mt-4">
+    <h1>Cardápio LimosIA</h1>
+   
+</div>
+
+<!-- Container principal -->
+<div class="container">
+    <!-- Container do calendário para centralizar -->
+    <div class="calendar">
+        <div class="calendar-header">
+            <button id="prev-month">Anterior</button>
+            <div id="month-year"></div>
+            <button id="next-month">Próximo</button>
+        </div>
+        <div class="calendar-days" id="calendar-days"></div>
+        <div class="description">
+            <input type="text" id="description-input" placeholder="Descrição">
+            <button id="save-description">Salvar</button>
+            <div id="description-output"></div>
+        </div>
+    </div>
+
+    <!-- Container de descrição e imagem separado do calendário -->
+    <div class="text-image-container">
+        <div id="day-text">
+            
+       
+
+        </div>
+        <img id="day-image"  src="/images/prato.jpg" style="width: 300px;">
+    </div>
+</div>
+
+<!-- Scripts do Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    let selectedDay = null;
+
+    function renderCalendar(month, year) {
+        const daysContainer = document.getElementById("calendar-days");
+        daysContainer.innerHTML = "";
+
+        const monthYear = document.getElementById("month-year");
+        monthYear.innerText = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement("div");
+            daysContainer.appendChild(emptyCell);
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const dayCell = document.createElement("div");
+            dayCell.innerText = i;
+            dayCell.addEventListener("click", () => selectDay(i));
+            if (selectedDay === i) {
+                dayCell.classList.add("selected");
+            }
+            daysContainer.appendChild(dayCell);
+        }
+    }
+
+    function selectDay(day) {
+            const days = document.querySelectorAll(".calendar-days div");
+            days.forEach(dayCell => dayCell.classList.remove("selected"));
+
+            const selectedCell = Array.from(days).find(dayCell => dayCell.innerText == day);
+            if (selectedCell) {
+                selectedCell.classList.add("selected");
+            }
+
+            selectedDay = day;
+            const dayText = document.getElementById("day-text");
+            const dayImage = document.getElementById("day-image");
+
+            // Conteúdo HTML que você quer inserir
+            dayText.innerHTML = `
+                Utilizado:
+                <ul>
+                    <li>140 gramas de feijão</li>
+                    <li>250 gramas de arroz</li>
+                    <li>100 gramas de filé de frango</li>
+                    <li>40 gramas de alface</li>
+                    <li>50 gramas de tomate</li>
+                </ul>
+            `;
+            dayImage.src = "/images/prato.jpg";
+            dayImage.style.display = "block";
+
+            // Exibir descrição salva na área de saída de comentários
+            const descriptionOutput = document.getElementById("description-output");
+            descriptionOutput.innerText = localStorage.getItem(`description-${currentYear}-${currentMonth}-${day}`) || "";
+        }
+    function saveDescription() {
+        const descriptionInput = document.getElementById("description-input");
+        if (selectedDay) {
+            localStorage.setItem(`description-${currentYear}-${currentMonth}-${selectedDay}`, descriptionInput.value);
+            const descriptionOutput = document.getElementById("description-output");
+            descriptionOutput.innerText = descriptionInput.value;
+            descriptionInput.value = "";
+        } else {
+            alert("Selecione um dia primeiro.");
+        }
+    }
+
+    document.getElementById("prev-month").addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    document.getElementById("next-month").addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    document.getElementById("save-description").addEventListener("click", saveDescription);
+
+    renderCalendar(currentMonth, currentYear);
+</script>
+
+<%- include ('partials/footer.ejs') %>

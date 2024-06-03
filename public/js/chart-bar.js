@@ -4,20 +4,20 @@ new Chart(document.getElementById("teste"), {
       labels: ["Segunda", "Terca", "Quarta", "Quinta", "Sexta"],
       datasets: [{
         label: "Comida Feita",
-        backgroundColor: window.theme.primary,
-        borderColor: window.theme.primary,
-        hoverBackgroundColor: window.theme.primary,
-        hoverBorderColor: window.theme.primary,
-        data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
+        backgroundColor: "#ff0000",
+        borderColor: "#ff0000",
+        hoverBackgroundColor: "#ff0000",
+        hoverBorderColor: "#ff0000",
+        data: [54, 67, 41, 55, 62],
         barPercentage: .75,
         categoryPercentage: .5
       }, {
         label: "Comida Desperdicada",
-        backgroundColor: "#dee2e6",
-        borderColor: "#dee2e6",
-        hoverBackgroundColor: "#dee2e6",
-        hoverBorderColor: "#dee2e6",
-        data: [69, 66, 24, 48, 52, 51, 44, 53, 62, 79, 51, 68],
+        backgroundColor: "#B0E0E6",
+        borderColor: "#B0E0E6",
+        hoverBackgroundColor: "#B0E0E6",
+        hoverBorderColor: "#B0E0E6",
+        data: [69, 66, 24, 48, 52],
         barPercentage: .75,
         categoryPercentage: .5
       }]
@@ -39,3 +39,4 @@ new Chart(document.getElementById("teste"), {
       }
     }
   });
+  
