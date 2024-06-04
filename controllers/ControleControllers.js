@@ -13,12 +13,17 @@ router.get("/controle",  Auth, (req, res) => {
     })
   })
   router.post("/controle/novo", Auth, (req,res) =>{
-    ControleService.Create(
-      req.body.Feitos,
-      req.body.Consumidos,
+   
+    const data = req.body
+    ControleService.Create(data).then(pratos =>{
+      console.log(pratos);
+      res.redirect("/controle");
+    }).catch(error =>{
+      console.log(error)
+    })
       
-    )
-    res.redirect("/controle");
+    
+ 
   } )
   router.post("/controle/adicionar", Auth, (req,res) =>{
     const id = req.body.id

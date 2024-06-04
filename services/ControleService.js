@@ -12,13 +12,9 @@ class ControleService{
     }
 
     
-    Create( Feitos, Consumidos ) {
-        const relatorio = new Relatorios({
-            PratosConsumidos : Feitos,
-            PratosFeitos : Consumidos,
-            
-        })
-        relatorio.save()
+    Create(data) {
+        const relatorio = new Relatorios(data)
+        return relatorio.save()
     }
     async Update(id ,Consumidos){
         const prato = await Pratos.findById(id)

@@ -43,11 +43,14 @@
               </tbody>
           </table>
           <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%; display: none;"></canvas>
+
+          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
           
           <script>
               function grafico(event) {
+                
                 if (event) event.preventDefault(); 
-          
+              
                 var xValues = ["Feitos", "Consumidos"];
                 var yValues = ["<%= pratosFeitos %>", "<%= pratosConsumidos %>"];
                 var barColors = ["red", "#00aba9"];
@@ -59,6 +62,8 @@
                 // Exibir o canvas e desenhar o gráfico
                 var chartCanvas = document.getElementById("myChart");
                 chartCanvas.style.display = 'block';
+
+                 
 
                 new Chart(chartCanvas, {
                   type: "pie",
@@ -82,14 +87,28 @@
                     }
                   }
                 });
+               
               }
 
               function fecharGrafico(event) {
-                if (event) event.preventDefault();
+                // if (event) event.preventDefault();
                 localStorage.removeItem('chartData');
                 
                 var chartCanvas = document.getElementById("myChart");
                 chartCanvas.style.display = 'none';
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                pratos = 
+
+                  {
+                    PratosFeitos : "<%= pratosFeitos %>",
+                    PratosConsumidos : "<%= pratosConsumidos %>"
+                  }
+                
+                axios.post('http://localhost:8080/controle/novo', pratos, config)
 
                 // Remove the existing chart instance
                 Chart.getChart(chartCanvas).destroy();

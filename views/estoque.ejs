@@ -45,10 +45,10 @@
                         <tbody>
                             <% estoque.forEach(produto=>{  %>
                             <tr>
-                                <td><%= produto.produto %></td>
-                                <td><%= produto.quantidade %></td>
-                                <td><%= produto.peso %></td>
-                                <td><%=produto.validade %></td>
+                                <td><%= produto.produto%></td>
+                                <td><%= produto.quantidade%></td>
+                                <td><%= produto.peso%>KG</td>
+                                <td><%=produto.validade%></td>
                                 <td>  <a class="btn btn-danger"  href="/estoque/editar/<%= produto._id %>">Editar</a></td>
                                 <td>  <a class="btn btn-danger" onclick="return confirm('Confirma as alterações?')" href="/estoque/excluir/<%= produto._id %>">Excluir</a></td>
                             </tr>

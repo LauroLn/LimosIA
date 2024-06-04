@@ -1,67 +1,141 @@
 <%- include ('partials/header.ejs') %>
 <%- include ('partials/navbar.ejs') %>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-    .calendar {
-      margin-top: 20px;
-    }
-    .day-header {
-      background-color: #f8f9fa;
-      font-weight: bold;
-    }
-    .day {
-      border: 1px solid #dee2e6;
-      padding: 10px;
-    }
-  </style>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h1>Produtos</h1>
-            </div>
-            <div class="card-body">
-               
-            </div>
+  .calendario {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .dia-semana {
+    font-weight: bold;
+    color: #333;
+  }
+  .dia-mes {
+    cursor: pointer;
+  }
+</style>
+ 
+ <div class="container">
+       <div class="card">
+        <div class="card-header">
+          <h2 class="text-center mb-4">Calendário</h2>
         </div>
-        <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h2 class="text-center">Maio 2024</h2>
-              </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col">
+              <button id="anterior" class="btn btn-primary bg-danger">Anterior</button>
             </div>
-            <div class="row calendar">
-              <div class="col-md-1 day-header text-center">Domingo</div>
-              <div class="col-md-1 day-header text-center">Segunda</div>
-              <div class="col-md-1 day-header text-center">Terça</div>
-              <div class="col-md-1 day-header text-center">Quarta</div>
-              <div class="col-md-1 day-header text-center">Quinta</div>
-              <div class="col-md-1 day-header text-center">Sexta</div>
-              <div class="col-md-1 day-header text-center">Sábado</div>
+            <div class="col">
+              <h3 id="mes-atual"></h3>
             </div>
-            <div class="row calendar">
-              <!-- Dias do calendário (adicionar dinamicamente com JavaScript) -->
-              <!-- Exemplo com alguns dias para maio de 2024 -->
-              <div class="col-md-1 day text-center">29</div>
-              <div class="col-md-1 day text-center">30</div>
-              <div class="col-md-1 day text-center">1</div>
-              <div class="col-md-1 day text-center">2</div>
-              <div class="col-md-1 day text-center">3</div>
-              <div class="col-md-1 day text-center">4</div>
-              <div class="col-md-1 day text-center">5</div>
+            <div class="col">
+              <button id="proximo" class="btn btn-primary bg-danger">Próximo</button>
             </div>
-            <div class="row calendar">
-              <!-- Continuação dos dias do calendário (adicionar dinamicamente com JavaScript) -->
-              <div class="col-md-1 day text-center">6</div>
-              <div class="col-md-1 day text-center">7</div>
-              <div class="col-md-1 day text-center">8</div>
-              <div class="col-md-1 day text-center">9</div>
-              <div class="col-md-1 day text-center">10</div>
-              <div class="col-md-1 day text-center">11</div>
-              <div class="col-md-1 day text-center">12</div>
-            </div>
-            <!-- Continue adicionando linhas conforme necessário para todos os dias do mês -->
           </div>
-    </div>
+          <table class="table table-bordered mt-3">
+            <thead>
+              <tr>
+                <th class="dia-semana">Dom</th>
+                <th class="dia-semana">Seg</th>
+                <th class="dia-semana">Ter</th>
+                <th class="dia-semana">Qua</th>
+                <th class="dia-semana">Qui</th>
+                <th class="dia-semana">Sex</th>
+                <th class="dia-semana">Sáb</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-calendario">
+              <!-- Aqui serão inseridos os dias do mês -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    
+      <!-- Bootstrap Bundle with Popper -->
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+          const corpoCalendario = document.getElementById('corpo-calendario');
+          const mesAtualElement = document.getElementById('mes-atual');
+          const btnAnterior = document.getElementById('anterior');
+          const btnProximo = document.getElementById('proximo');
+    
+          let dataAtual = new Date();
+    
+          function mostrarCalendario(ano, mes) {
+            corpoCalendario.innerHTML = '';
+    
+            // Configura a data para o primeiro dia do mês
+            const primeiroDia = new Date(ano, mes, 1);
+    
+            // Obtem o número de dias no mês
+            const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+    
+            // Obtem o dia da semana para o primeiro dia do mês
+            const primeiroDiaSemana = primeiroDia.getDay();
+    
+            // Cria as células do calendário
+            let diaAtual = 1;
+            for (let i = 0; i < 6; i++) {
+              const linha = document.createElement('tr');
+    
+              for (let j = 0; j < 7; j++) {
+                const celula = document.createElement('td');
+                if (i === 0 && j < primeiroDiaSemana) {
+                  // Células vazias antes do primeiro dia do mês
+                  celula.textContent = '';
+                } else if (diaAtual > diasNoMes) {
+                  // Células vazias após o último dia do mês
+                  break;
+                } else {
+                  celula.textContent = diaAtual;
+                  celula.classList.add('dia-mes');
+                  celula.dataset.date = new Date(ano, mes, diaAtual).toISOString().split('T')[0];
+                  diaAtual++;
+                }
+                linha.appendChild(celula);
+              }
+              corpoCalendario.appendChild(linha);
+            }
+    
+            // Atualiza o cabeçalho com o mês e o ano atual
+            const nomeMes = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(primeiroDia);
+            mesAtualElement.textContent = `${nomeMes} ${ano}`;
+          }
+    
+          // Mostra o calend
+          mostrarCalendario(dataAtual.getFullYear(), dataAtual.getMonth());
+    
+    // Event listener para o botão anterior
+    btnAnterior.addEventListener('click', function() {
+      dataAtual.setMonth(dataAtual.getMonth() - 1);
+      mostrarCalendario(dataAtual.getFullYear(), dataAtual.getMonth());
+    });
+    
+    // Event listener para o botão próximo
+    btnProximo.addEventListener('click', function() {
+      dataAtual.setMonth(dataAtual.getMonth() + 1);
+      mostrarCalendario(dataAtual.getFullYear(), dataAtual.getMonth());
+    });
+    
+    // Event listener para os dias do mês
+    corpoCalendario.addEventListener('click', function(event) {
+      if (event.target.classList.contains('dia-mes')) {
+        const dataSelecionada = new Date(event.target.dataset.date);
+        alert(`Você selecionou o dia: ${dataSelecionada.toLocaleDateString('pt-BR')}`);
+      }
+    });
+    });
+    </script>
+        </div>
+       </div>
+  </div>
+  
+  <%- include ('partials/footer.ejs') %>
 
 
-
-<%- include ('partials/footer.ejs') %>
+      
