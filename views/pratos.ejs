@@ -1,0 +1,130 @@
+<%- include ('partials/header.ejs') %>
+<%- include ('partials/navbar.ejs') %>
+
+<div class="container">
+  <div class="card">
+      <div class="card-header">
+          <h1>Pratos</h1>
+      </div>
+      <div class="card-body">
+          <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Finalizar/Iniciar dia</th>
+                  <th scope="col">Pratos Consumidos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>    
+                      <form class="contact-form row">
+                      <div class="form-field col-lg-6" style="width: 150px;">
+                         <label class="label" for="name"></label>
+                      </div>
+                      <div class="col-lg-6"> 
+                        <input class="submit-btn" type="button" value="Iniciar" id="grafico" style="width: 100px; margin-top: 13%; margin-left: -117%;">
+                        <input class="submit-btn" type="button" value="Finalizar" id="grafico-fechar" style="width: 125px; margin-top: 13%; margin-left: -117%;">
+                      </div>
+                      </form>
+                  </th>
+                  <td>
+                      <form class="contact-form row" action="/controle/adicionar" method="post">
+                      <div class="form-field col-lg-6">
+                         <input id="Consumidos" name="Consumidos" class="input-text js-input" type="text" required>
+                         <label class="label" for="Consumidos"></label>
+                      </div>
+                      <div class="col-lg-6"> 
+                          <input type="hidden" name="id" value="<%= pratoID %>" >
+                          <input class="submit-btn" type="submit" value="Contabilizar" style="width: 160px; margin-top: 13%;">
+                      </div>
+                      </form>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+          <canvas id="myChart" style="width:100%; max-width: 700px; margin-left: 17%; display: none;"></canvas>
+
+          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+          
+          <script>
+              function grafico(event) {
+                
+                if (event) event.preventDefault(); 
+              
+                var xValues = ["Feitos", "Consumidos"];
+                var yValues = ["<%= pratosFeitos %>", "<%= pratosConsumidos %>"];
+                var barColors = ["red", "#00aba9"];
+
+                // Salvando os dados no localStorage
+                var chartData = { xValues: xValues, yValues: yValues, barColors: barColors };
+                localStorage.setItem('chartData', JSON.stringify(chartData));
+              
+                // Exibir o canvas e desenhar o gráfico
+                var chartCanvas = document.getElementById("myChart");
+                chartCanvas.style.display = 'block';
+
+                 
+
+                new Chart(chartCanvas, {
+                  type: "pie",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues,
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Gráfico de Pratos'
+                      }
+                    }
+                  }
+                });
+               
+              }
+
+              function fecharGrafico(event) {
+                // if (event) event.preventDefault();
+                localStorage.removeItem('chartData');
+                
+                var chartCanvas = document.getElementById("myChart");
+                chartCanvas.style.display = 'none';
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                pratos = 
+
+                  {
+                    Pratos : "<%= Number(pratosFeitos) + Number(pratosConsumidos) %>",
+                    PratosFeitos : "<%= Number(pratosFeitos) %>",
+                    PratosConsumidos : "<%= Number(pratosConsumidos) %>",
+                    PratosDesperdicados : "<%= Number(pratosFeitos) + Number(pratosConsumidos) - Number(pratosConsumidos) %>"
+                  }
+                
+                axios.post('http://localhost:8000/controle/novo', pratos, config)
+
+                // Remove the existing chart instance
+                Chart.getChart(chartCanvas).destroy();
+              }
+
+              // Adicionando os event listeners
+              document.getElementById("grafico").addEventListener("click", grafico);
+              document.getElementById("grafico-fechar").addEventListener("click", fecharGrafico);
+          </script>
+
+
+
+      </div>
+  </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>

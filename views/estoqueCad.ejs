@@ -1,0 +1,47 @@
+<%- include ('partials/navbar.ejs') %>
+<%- include ('partials/header.ejs') %>
+
+
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    
+ <div class="card">
+   
+    <div class="card-body">
+        <section class="get-in-touch">
+            <h1 class="title">Adicionar ao Estoque</h1>
+            <form class="contact-form row" action="/estoque/novo" method="post">
+               <div class="form-field col-lg-6">
+                  <input id="produto" name="produto" class="input-text js-input" type="text" required>
+                  <label class="label" for="name">Produto</label>
+               </div>
+               <div class="form-field col-lg-6 ">
+                  <input id="quantidade" name="quantidade" class="input-text js-input" type="text" required>
+                  <label class="label" for="email">Quantidade</label>
+               </div>
+               <div class="form-field col-lg-6 ">
+                  <input id="peso" name="peso" class="input-text js-input" type="text" required>
+                  <label class="label" for="company">Peso</label>
+               </div>
+                <div class="form-field col-lg-6 ">
+                  <input id="validade" name="validade" class="input-text js-input" type="text" required>
+                  <label class="label" for="phone">Data de Validade</label>
+               </div>
+           
+               <div class="form-field col-lg-12">
+                  <input class="submit-btn" type="submit" value="Cadastrar">
+                  
+               </div>
+            </form>
+         </section>
+    </div>
+ </div>
+</div>
+
+
+
+
+
+
+<%- include ('partials/footer.ejs') %>
