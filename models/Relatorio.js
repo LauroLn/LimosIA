@@ -4,7 +4,11 @@ const relatorio = new mongoose.Schema({
    Pratos: Number,
    PratosConsumidos: Number,
    PratosFeitos: Number,
-   PratosDesperdicados : Number 
+   PratosDesperdicados : Number,
+   dataCriacao: {
+      type: Date,
+      default: Date.now
+  }
 })
 
 export default relatorio

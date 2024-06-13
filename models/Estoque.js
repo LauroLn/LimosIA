@@ -4,7 +4,7 @@ const produtos = new mongoose.Schema({
     produto : String,
     quantidade : Number,
     peso : Number,
-    validade : String
+    validade : Date
 })
 
 export default produtos

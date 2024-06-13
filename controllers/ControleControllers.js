@@ -2,6 +2,8 @@ import express from "express"
 const router = express.Router()
 import Auth from "../middleware/Auth.js"
 import ControleService from "../services/ControleService.js"
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 router.get("/controle",  Auth, (req, res) => {
     ControleService.SelectAll().then((prato) => {
