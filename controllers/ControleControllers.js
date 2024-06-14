@@ -2,13 +2,11 @@ import express from "express"
 const router = express.Router()
 import Auth from "../middleware/Auth.js"
 import ControleService from "../services/ControleService.js"
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 router.get("/controle",  Auth, (req, res) => {
     ControleService.SelectAll().then((prato) => {
       res.render("pratos", {
-        pratosFeitos: prato[0].Feitos,
+        pratosFeitos: 100,
         pratosConsumidos: prato[0].Consumidos,
         pratoID : prato[0]._id
 
@@ -34,6 +32,25 @@ router.get("/controle",  Auth, (req, res) => {
     ControleService.Update(id, consumidos)
       res.redirect("/controle")
   })
+/*
+  router.post("/controle/excluir", Auth, (req,res) =>{
+    const id = req.body.id; 
+    ControleService.Delete(id)
+    .then(() => {
+      res.redirect("/controle");
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("Erro ao excluir prato");
+    });
+  })
+  */
+  router.post("/controle/updatePratos", Auth, (req,res)=>{
+    const id = req.body.id;
+    ControleService.UpdatePrato(id)
+    res.redirect("/controle")
+  })
+
 
 
 

@@ -96,6 +96,13 @@
                 
                 var chartCanvas = document.getElementById("myChart");
                 chartCanvas.style.display = 'none';
+
+            const date = new Date();
+            const formatter = new Intl.DateTimeFormat('pt-BR', {
+                weekday: "long"
+            });
+            const formattedDate = formatter.format(date);
+                
                 const config = {
                     headers: {
                         'Content-Type': 'application/json'
@@ -107,10 +114,23 @@
                     Pratos : "<%= Number(pratosFeitos) + Number(pratosConsumidos) %>",
                     PratosFeitos : "<%= Number(pratosFeitos) %>",
                     PratosConsumidos : "<%= Number(pratosConsumidos) %>",
-                    PratosDesperdicados : "<%= Number(pratosFeitos) + Number(pratosConsumidos) - Number(pratosConsumidos) %>"
+                    PratosDesperdicados : "<%= Number(pratosFeitos) + Number(pratosConsumidos) - Number(pratosConsumidos) %>",
+                    diaSemana: formattedDate
                   }
                 
                 axios.post('http://localhost:8000/controle/novo', pratos, config)
+
+                const configExcluir ={
+                  headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                pratoExcluir =
+                {
+                  id: "<%= pratoID %>"
+                }
+                axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, configExcluir)
+
 
                 // Remove the existing chart instance
                 Chart.getChart(chartCanvas).destroy();

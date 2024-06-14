@@ -8,7 +8,9 @@ const relatorio = new mongoose.Schema({
    dataCriacao: {
       type: Date,
       default: Date.now
-  }
+  },
+   Pratododia: String,
+   diaSemana: String
 })
 
 export default relatorio
