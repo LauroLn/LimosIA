@@ -6,7 +6,7 @@ import ControleService from "../services/ControleService.js"
 router.get("/controle",  Auth, (req, res) => {
     ControleService.SelectAll().then((prato) => {
       res.render("pratos", {
-        pratosFeitos: 100,
+        pratosFeitos: prato[0].Feitos,
         pratosConsumidos: prato[0].Consumidos,
         pratoID : prato[0]._id
 
@@ -45,12 +45,20 @@ router.get("/controle",  Auth, (req, res) => {
     });
   })
   */
-  router.post("/controle/updatePratos", Auth, (req,res)=>{
+  router.post("/controle/updatePratos", Auth, async (req,res)=>{
     const id = req.body.id;
-    ControleService.UpdatePrato(id)
+    const teste = await ControleService.UpdatePrato(id)
+    console.log(teste)
     res.redirect("/controle")
   })
-
+  router.post("/controle/updateAdd", Auth, async (req,res)=>{
+    const id = req.body.id;
+    const aaa = await ControleService.UpdateAdd(id)
+    console.log(aaa)
+   
+  
+    res.redirect("/controle")
+  })
 
 
 

@@ -48,7 +48,6 @@
           
           <script>
               function grafico(event) {
-                
                 if (event) event.preventDefault(); 
               
                 var xValues = ["Feitos", "Consumidos"];
@@ -120,20 +119,31 @@
                 
                 axios.post('http://localhost:8000/controle/novo', pratos, config)
 
-                const configExcluir ={
-                  headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
+                
                 pratoExcluir =
                 {
                   id: "<%= pratoID %>"
                 }
-                axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, configExcluir)
-
+                axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, config)
+/*
+                const configAdd ={
+                  headers: {
+                     'Content-Type': 'application/json'
+                  }
+                };
+                pratoAdd=
+                {
+                  id: "<%= pratoID %>"
+                }
+                axios.post('http://localhost:8000/controle/updateAdd',pratoAdd,configAdd)
+*/
+                
 
                 // Remove the existing chart instance
-                Chart.getChart(chartCanvas).destroy();
+                // Chart.getChart(chartCanvas).destroy();
+                location.reload();
+                
+                
               }
 
               // Adicionando os event listeners

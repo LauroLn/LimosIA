@@ -1,3 +1,7 @@
+/* Seu estilo existente */
+
+/* Adicione o novo CSS abaixo ao seu arquivo style.css */
+
 .login,
 .image {
   min-height: 100vh;
@@ -8,7 +12,6 @@
   background-size: cover;
   background-position: center center;
 }
-
 
 ul {
     list-style: square;
@@ -33,7 +36,6 @@ footer {
   max-width: 800px;
   margin: 50px auto;
   position: relative;
-
 }
 .get-in-touch .title {
   text-align: center;
@@ -42,12 +44,11 @@ footer {
   font-size: 3.2em;
   line-height: 48px;
   padding-bottom: 48px;
-     color: #000000;
-    background: #ffffff;
-    background: -moz-linear-gradient(left,#ffffff  0%,#ffffff 100%) !important;
-    background: -webkit-linear-gradient(left,#ffffff  0%,#ffffff 100%) !important;
-    background: linear-gradient(to right,#ffffff  0%,#ffffff  100%) !important;
-
+  color: #000000;
+  background: #ffffff;
+  background: -moz-linear-gradient(left,#ffffff  0%,#ffffff 100%) !important;
+  background: -webkit-linear-gradient(left,#ffffff  0%,#ffffff 100%) !important;
+  background: linear-gradient(to right,#ffffff  0%,#ffffff  100%) !important;
 }
 
 .contact-form .form-field {
@@ -133,3 +134,104 @@ footer {
   text-align: center;
 }
 
+/* Novo CSS adicionado para a estilização do calendário e da informação */
+
+.calendar-container, .info-container {
+  width: 50%;
+}
+.calendar-container {
+  margin-right: 20px;
+}
+.content-container {
+  display: flex;
+  justify-content: center;
+}
+h1 {
+  text-align: center;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+.calendar-header button {
+  background-color: #ff3547;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.calendar-header button:hover {
+  background-color: #ff3547;
+}
+.calendar-header #month-year {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+}
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  justify-items: center;
+  width: 100%;
+  max-width: 500px;
+}
+.calendar-days div {
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.calendar-days div:hover {
+  background-color: #ff3547;
+  color: white;
+}
+.calendar-days div.selected {
+  background-color: #ff3547;
+  color: white;
+}
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  justify-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 10px;
+}
+.calendar-weekdays div {
+  font-weight: bold;
+}
+.text-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.text-image-container img {
+  max-width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.ingredient-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+}
