@@ -86,75 +86,91 @@
                     }
                   }
                 });
-               
+                
               }
 
               function fecharGrafico(event) {
-                // if (event) event.preventDefault();
-                localStorage.removeItem('chartData');
-                
-                var chartCanvas = document.getElementById("myChart");
-                chartCanvas.style.display = 'none';
+    if (event) event.preventDefault();  // Prevenir o envio padrão do formulário
+    
+    var chartCanvas = document.getElementById("myChart");
+    chartCanvas.style.display = 'none';
+    
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat('pt-BR', {
+        weekday: "long"
+    });
+    const formattedDate = formatter.format(date);
+    
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    
+    let Pratododia;
+    switch (formattedDate.toLowerCase()) {
+        case "segunda-feira":
+            Pratododia = "macarrão";
+            break;
+        case "terça-feira":
+            Pratododia = "sopa";
+            break;
+        case "quarta-feira":
+            Pratododia = "frango assado";
+            break;
+        case "quinta-feira":
+            Pratododia = "peixe";
+            break;
+        case "sexta-feira":
+            Pratododia = "pizza";
+            break;
+        case "sábado":
+            Pratododia = "feijoada";
+            break;
+        case "domingo":
+            Pratododia = "churrasco";
+            break;
+        default:
+            Pratododia = "indefinido";
+            break;
+    }
 
-            const date = new Date();
-            const formatter = new Intl.DateTimeFormat('pt-BR', {
-                weekday: "long"
-            });
-            const formattedDate = formatter.format(date);
-                
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                pratos = 
+    const pratos = {
+        Pratos: "<%= Number(pratosFeitos) + Number(pratosConsumidos) %>",
+        PratosFeitos: "<%= Number(pratosFeitos) %>",
+        PratosConsumidos: "<%= Number(pratosConsumidos) %>",
+        PratosDesperdicados: "<%= Number(pratosFeitos) + Number(pratosConsumidos) - Number(pratosConsumidos) %>",
+        diaSemana: formattedDate,
+        Pratododia: Pratododia
+    };
 
-                  {
-                    Pratos : "<%= Number(pratosFeitos) + Number(pratosConsumidos) %>",
-                    PratosFeitos : "<%= Number(pratosFeitos) %>",
-                    PratosConsumidos : "<%= Number(pratosConsumidos) %>",
-                    PratosDesperdicados : "<%= Number(pratosFeitos) + Number(pratosConsumidos) - Number(pratosConsumidos) %>",
-                    diaSemana: formattedDate
-                  }
-                
-                axios.post('http://localhost:8000/controle/novo', pratos, config)
+    const pratoExcluir = {
+        id: "<%= pratoID %>"
+    };
 
-                
-                pratoExcluir =
-                {
-                  id: "<%= pratoID %>"
-                }
-                axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, config)
-/*
-                const configAdd ={
-                  headers: {
-                     'Content-Type': 'application/json'
-                  }
-                };
-                pratoAdd=
-                {
-                  id: "<%= pratoID %>"
-                }
-                axios.post('http://localhost:8000/controle/updateAdd',pratoAdd,configAdd)
-*/
-                
+    axios.post('http://localhost:8000/controle/novo', pratos, config)
+        .then(() => {
+            return axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, config);
+        })
+        .then(() => {
+            location.reload();
+        })
+        .catch(error => {
+            console.error("Houve um erro ao processar as requisições:", error);
+        });
+}
 
-                // Remove the existing chart instance
-                // Chart.getChart(chartCanvas).destroy();
-                location.reload();
-                
-                
-              }
+// Adicionando os event listeners
+document.getElementById("grafico").addEventListener("click", grafico);
+document.getElementById("grafico-fechar").addEventListener("click", fecharGrafico);
 
-              // Adicionando os event listeners
-              document.getElementById("grafico").addEventListener("click", grafico);
-              document.getElementById("grafico-fechar").addEventListener("click", fecharGrafico);
           </script>
 
 
 
       </div>
   </div>
+  
 </div>
 
 <%- include ('partials/footer.ejs') %>

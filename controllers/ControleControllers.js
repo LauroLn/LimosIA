@@ -3,6 +3,16 @@ const router = express.Router()
 import Auth from "../middleware/Auth.js"
 import ControleService from "../services/ControleService.js"
 
+
+
+/*router.post("/controle", Auth, (req,res) =>{
+  const teste = ControleService.CreateInicio(
+    Feitos = 0,
+    Consumidos = 0
+  )
+  console.log(teste)
+})
+  */
 router.get("/controle",  Auth, (req, res) => {
     ControleService.SelectAll().then((prato) => {
       res.render("pratos", {
@@ -13,6 +23,7 @@ router.get("/controle",  Auth, (req, res) => {
       })
     })
   })
+
   router.post("/controle/novo", Auth, (req,res) =>{
    
     const data = req.body
@@ -22,6 +33,7 @@ router.get("/controle",  Auth, (req, res) => {
     }).catch(error =>{
       console.log(error)
     })
+
       
     
  

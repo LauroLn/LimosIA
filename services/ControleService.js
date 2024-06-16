@@ -11,11 +11,20 @@ class ControleService{
         return pratos
     }
 
+
     
     Create(data) {
         const relatorio = new Relatorios(data)
         return relatorio.save()
     }
+    CreateInicio(Feitos,Consumidos){
+        const prato = new Pratos({
+            Feitos:Feitos,
+            Consumidos: Consumidos
+        })
+        prato.save()
+    }
+
     async Update(id ,Consumidos){
         const prato = await Pratos.findById(id)
         let ConsumidosAtual = prato.Consumidos
@@ -55,9 +64,15 @@ class ControleService{
         return updatedPrato
       }
 */
+
+    SelectRelatorios() {
+        const relatorio = Relatorios.find()
+        return relatorio
+    }
 }
 /*let consumidos = 100
 let feitos = 0
 return Pratos.findByIdAndUpdate(id,{Consumidos: consumidos, Feitos: feitos})
 */
+
 export default new ControleService()

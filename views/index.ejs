@@ -1,108 +1,130 @@
 <%- include ('partials/header.ejs') %>
 <%- include ('partials/navbar.ejs') %>
 
+<div class="container" id="content">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h3>Feitos e Desperdiçados</h3>
+        </div>
+        <div class="card-body">
+            <div class="chart-bar">
+                <canvas id="GraficoPrincipal"></canvas>
+            </div>
+        </div>
+    </div>
 
-    <div class="container">
-    
-        <div class="card shadow mb-4">
+    <div class="d-flex justify-content-center gap-4">
+        <div class="card shadow-sm mb-4" style="flex: 1;">
             <div class="card-header py-3">
-                <h3>Feitos e Desperdiçados</h3>
+                <h3>Tipos de pratos desperdiçados</h3>
             </div>
             <div class="card-body">
-                <div class="chart-bar">
-                    <canvas id="GraficoPrincipal"></canvas>
+                <div class="graph-pizza" style="display: flex; justify-content: center; gap: 20px;">
+                    <canvas id="myChart" style="width: 100%; max-width: 620px;"></canvas>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                
             </div>
-      
-            
         </div>
-        
-        <div class="d-flex justify-content-center gap-4">
-            <div class="card shadow-sm mb-4" style="flex: 1;">
-                <div class="card-header py-3">
-                    <h3>Tipos de pratos desperdiçados</h3>
-                </div>
-                <div class="card-body">
-                    <div class="graph-pizza" style="display: flex; justify-content: center; gap: 20px;">
-                        <canvas id="myChart" style="width: 100%; max-width: 620px;"></canvas>
-                    </div>
-                </div>
+
+        <div class="card shadow-sm mb-4" style="flex: 1;">
+            <div class="card-header py-3">
+                <h3>Pratos desperdiçados</h3>
             </div>
-            
-            <div class="card shadow-sm mb-4" style="flex: 1;">
-                <div class="card-header py-3">
-                    <h3>Pratos desperdiçados</h3>
-                </div>
-                <div class="card-body">
-                    <div class="graph-line" style="display: flex; justify-content: center; gap: 20px;">
-                        <canvas id="linha" style="width: 100%; max-width: 620px;"></canvas>
-                    </div>
+            <div class="card-body">
+                <div class="graph-line" style="display: flex; justify-content: center; gap: 20px;">
+                    <canvas id="linha" style="width: 100%; max-width: 620px;"></canvas>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script>
-        var xValues = ["Macarrão", "Arroz com ovo", "Bife e Salada", "Sopa", "Macarrão com salsicha"];
-        var yValues = [20, 10,10,15,30];
-        var barColors = ["red", "#00aba9","#6959CD","#4169E1","#BA55D3"];
-        
-        var ctx1 = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx1, {
-            type: "pie",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    backgroundColor: barColors,
-                    data: yValues
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gráfico de Desperdicio'
-                    }
+
+
+    <button class="btn btn-danger" style="margin-bottom: 60px;" id="saveScreenshot">Salvar Relatório</button>
+    <br>
+    <br>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
+<script>
+    // Gráfico de Pizza
+    var xValues = ["Macarrão", "Arroz com ovo", "Bife e Salada", "Sopa", "Macarrão com salsicha"];
+    var yValues = ["<%= pratosFeitos %>", 10, 10, 15, 30];
+    var barColors = ["red", "#00aba9", "#6959CD", "#4169E1", "#BA55D3"];
+
+    var ctx1 = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx1, {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Gráfico de Desperdício'
                 }
             }
+        }
+    });
+
+    // Gráfico de Linha
+    const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'];
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Pratos desperdiçados',
+            data: [65, 59, 80, 81, 56, 55, 40],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+
+    window.onload = function() {
+        const ctx = document.getElementById('linha').getContext('2d');
+        new Chart(ctx, config);
+    };
+
+    // Geração de PDF
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnGenerate = document.querySelector("#saveScreenshot");
+
+        btnGenerate.addEventListener("click", () => {
+            // Conteúdo do PDF
+            const content = document.querySelector("#content");
+
+            // Configuração do arquivo final de PDF
+            const options = {
+                margin: [10, 10, 10, 10], // Ajuste as margens conforme necessário
+                filename: "arquivo.pdf",
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, // Ajuste a escala para uma melhor resolução
+                    useCORS: true // Para garantir que imagens de terceiros sejam carregadas corretamente
+                },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+            };
+
+            // Gerar e baixar PDF
+            html2pdf().set(options).from(content).save();
         });
-    </script>
-    <script>
-        const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'];
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Pratos desperdiçados',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        };
-    
-        const config = {
-            type: 'line',
-            data: data,
-            options: {}
-        };
-    
-        window.onload = function() {
-            const ctx = document.getElementById('linha').getContext('2d');
-            new Chart(ctx, config);
-        };
-    </script>
-    
+    });
+</script>
 
-
-    
-                
 <%- include ('partials/footer.ejs') %>

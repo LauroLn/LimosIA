@@ -235,3 +235,33 @@ h1 {
   margin: 10px 0;
   width: 100%;
 }
+.page-break {
+  page-break-before: always;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+@media print {
+  .d-flex {
+      display: block !important;
+  }
+
+  .card {
+      page-break-inside: avoid;
+  }
+
+  .page-break {
+      display: block;
+      height: 0;
+      page-break-before: always;
+  }
+}
+
+#content img,
+#content canvas {
+  max-width: 100%;
+  height: auto;
+}
+
