@@ -44,6 +44,7 @@ class EstoqueService {
             console.log(err)
         })
     }
+    
 }
 
    

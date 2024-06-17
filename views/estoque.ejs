@@ -1,35 +1,37 @@
 <%- include ('partials/navbar.ejs') %>
 <%- include ('partials/header.ejs') %>
 
+
+
 <body class="hm-gradient">
-    
     <main>
-        
-        <!--MDB Tables-->
         <div class="container mt-4">
-
-         
-
             <div class="card mb-4">
                 <div class="card-body">
                     <!-- Grid row -->
                     <div class="row">
                         <!-- Grid column -->
                         <div class="col-md-12">
-                            <a class="btn btn-danger" style="margin-left: 81%;position: absolute; margin-top: 2%;" href="/estoque/cadastrar">Cadastrar</a>
-                          
+                            <a class="btn btn-danger" style="margin-left: 81%; position: absolute; margin-top: 2%;" href="/estoque/cadastrar">Cadastrar</a>
                             <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text">Estoque</h2>
-                            <div class="input-group md-form form-sm form-2 pl-0">
-                                <input class="form-control my-0 py-1 pl-3 dark-border" type="text" placeholder="Pesquise no estoque..." aria-label="Search">
-                                <span class="input-group-addon waves-effect dark lighten-2" id="basic-addon1"><a><i class="fa fa-search dark" aria-hidden="true"></i></a></span>
-                            </div>
+                            <!-- Formulário de pesquisa -->
+                            <form action="/estoque/buscar" method="GET" class="form-inline md-form form-sm pl-0">
+                                <div class="input-group" style="width: 100%;">
+                                    <input id="searchInput" class="form-control dark-border" type="text" placeholder="Pesquise no estoque..." aria-label="Search" name="query">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary dark-border" type="submit">
+                                            <img src="/images/lupa.png" alt="Buscar" style="height: 20px;">
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <!-- Grid column -->
                     </div>
                     <!-- Grid row -->
-                    <!--Table-->
+
+                    <!-- Tabela de estoque -->
                     <table class="table table-striped">
-                        <!--Table head-->
                         <thead>
                             <tr>
                                 <th>Produto</th>
@@ -40,35 +42,53 @@
                                 <th>Excluir</th>
                             </tr>
                         </thead>
-                        <!--Table head-->
-                        <!--Table body-->
-                        <tbody>
-                            <% estoque.forEach(produto=>{  %>
-                            <tr>
-                                <td><%= produto.produto %></td>
-                                <td><%= produto.quantidade %></td>
-                                <td><%= produto.peso %></td>
-                                <td><%= new Date(produto.validade).toLocaleDateString() %></td>
-                                <td>  <a class="btn btn-danger"  href="/estoque/editar/<%= produto._id %>">Editar</a></td>
-                                <td>  <a class="btn btn-danger" onclick="return confirm('Confirma as alterações?')" href="/estoque/excluir/<%= produto._id %>">Excluir</a></td>
-                            </tr>
-                            <% }) %> 
+                        <tbody id="tableBody">
+                            <% estoque.forEach(produto => { %>
+                                <tr>
+                                    <td><%= produto.produto %></td>
+                                    <td><%= produto.quantidade %></td>
+                                    <td><%= produto.peso %></td>
+                                    <td><%= new Date(produto.validade).toLocaleDateString() %></td>
+                                    <td><a class="btn btn-danger" href="/estoque/editar/<%= produto._id %>">Editar</a></td>
+                                    <td><a class="btn btn-danger" onclick="return confirm('Confirma as alterações?')" href="/estoque/excluir/<%= produto._id %>">Excluir</a></td>
+                                </tr>
+                            <% }) %>
                         </tbody>
-                      
-                        <!--Table body-->
                     </table>
-                    <!--Table-->
+                    <!-- Fim da tabela de estoque -->
                 </div>
-            
-
+            </div>
         </div>
-        <!--MDB Tables-->
-      
     </main>
-  
 
+    <%- include ('partials/footer.ejs') %>
 
+    <!-- Script JavaScript para filtrar dinamicamente os resultados da tabela -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const tableBody = document.getElementById('tableBody');
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const searchText = searchInput.value.trim().toLowerCase();
+
+                Array.from(tableBody.children).forEach(row => {
+                    const productName = row.cells[0].textContent.trim().toLowerCase();
+
+                    if (productName.includes(searchText)) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+
 
 
 

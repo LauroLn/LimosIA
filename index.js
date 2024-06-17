@@ -32,12 +32,12 @@ app.use("/", ControleController)
 app.get("/",  Auth, (req, res) => {
     ControleService.SelectRelatorios().then((relatorio) => {
       res.render("index", {
-        pratosFeitos: relatorio[0].PratosFeitos,
-        pratosConsumidos: relatorio[0].Consumidos,
-        Pratos: relatorio[0].pratos,
-        PratosDesperdicados: relatorio[0].PratosDesperdicados,
-        diaSemana: relatorio[0].diaSemana,
-        Pratododia: relatorio[0].Pratododia
+        pratosFeitos: relatorio.PratosFeitos,
+        pratosConsumidos: relatorio.Consumidos,
+        Pratos: relatorio.Pratos,
+        PratosDesperdicados: relatorio.PratosDesperdicados,
+        diaSemana: relatorio.diaSemana,
+        Pratododia: relatorio.Pratododia
       })
     })
   })
