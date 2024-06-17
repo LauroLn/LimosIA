@@ -69,6 +69,30 @@ class ControleService{
         const relatorio = Relatorios.find()
         return relatorio
     }
+
+    SelectRelatoriosOrdenados() {
+        const relatorios = Relatorios.find().sort({ dataCriacao: 1 });
+        return relatorios
+    } 
+
+    async getDesperdicioPorPrato() {
+        try {
+            const pratos = await Relatorios.distinct("Pratododia");
+            const desperdicioPorPrato = await Promise.all(pratos.map(async prato => {
+                const registros = await Relatorios.find({ Pratododia: prato }).sort({ dataCriacao: -1 }).limit(7);
+                const desperdicios = registros.reverse().map(registro => ({
+                    data: registro.dataCriacao,
+                    desperdicio: registro.PratosDesperdicados
+                }));
+                return { prato, desperdicios };
+            }));
+            return desperdicioPorPrato;
+        } catch (error) {
+            console.error("Erro ao buscar os relatórios:", error);
+            throw error;
+        }
+    }
+    
 }
 /*let consumidos = 100
 let feitos = 0

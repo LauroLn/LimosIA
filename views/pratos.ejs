@@ -88,47 +88,40 @@
                 });
                 
               }
-
               function fecharGrafico(event) {
     if (event) event.preventDefault();  // Prevenir o envio padrão do formulário
-    
+
     var chartCanvas = document.getElementById("myChart");
     chartCanvas.style.display = 'none';
-    
+
     const date = new Date();
     const formatter = new Intl.DateTimeFormat('pt-BR', {
         weekday: "long"
     });
     const formattedDate = formatter.format(date);
-    
+
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    
+
     let Pratododia;
     switch (formattedDate.toLowerCase()) {
         case "segunda-feira":
-            Pratododia = "macarrão";
+            Pratododia = "Arroz Frango Grelhado";
             break;
         case "terça-feira":
-            Pratododia = "sopa";
+            Pratododia = "Macarrão à Bolonhesa";
             break;
         case "quarta-feira":
-            Pratododia = "frango assado";
+            Pratododia = "Sopa de Legumes";
             break;
         case "quinta-feira":
-            Pratododia = "peixe";
+            Pratododia = "Frango Assado";
             break;
         case "sexta-feira":
-            Pratododia = "pizza";
-            break;
-        case "sábado":
-            Pratododia = "feijoada";
-            break;
-        case "domingo":
-            Pratododia = "churrasco";
+            Pratododia = "Carne de Porco";
             break;
         default:
             Pratododia = "indefinido";
@@ -149,17 +142,22 @@
     };
 
     axios.post('http://localhost:8000/controle/novo', pratos, config)
-        .then(() => {
+        .then(response => {
+            console.log("Primeira requisição completa:", response.data);
             return axios.post('http://localhost:8000/controle/updatePratos', pratoExcluir, config);
         })
-        .then(() => {
+        .then(response => {
+            console.log("Segunda requisição completa:", response.data);
+            return axios.post('http://localhost:8000/estoque/debitar', {}, config);
+        })
+        .then(response => {
+            console.log("Terceira requisição completa:", response.data);
             location.reload();
         })
         .catch(error => {
             console.error("Houve um erro ao processar as requisições:", error);
         });
 }
-
 // Adicionando os event listeners
 document.getElementById("grafico").addEventListener("click", grafico);
 document.getElementById("grafico-fechar").addEventListener("click", fecharGrafico);

@@ -57,6 +57,18 @@ router.get("/estoque/excluir/:id", Auth , (req,res) =>{
   EstoqueService.Delete(id)
   res.redirect("/estoque")
 })
+router.post("/estoque/debitar", Auth, (req, res) => {
+  console.log("Requisição recebida em /estoque/debitar");
+  EstoqueService.DeleteAll().then(() => {
+      console.log("Todos os documentos foram deletados com sucesso.");
+      res.send("Todos os documentos foram deletados com sucesso.");
+  }).catch(err => {
+      console.error(err);
+      res.status(500).send("Erro ao deletar os documentos.");
+  });
+});
+
+
 
 
 

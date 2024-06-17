@@ -44,6 +44,15 @@ class EstoqueService {
             console.log(err)
         })
     }
+    DeleteAll() {
+        Estoque.deleteMany({}).then(() => {
+            console.log("Todos os documentos foram deletados.");
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    
     
 }
 
